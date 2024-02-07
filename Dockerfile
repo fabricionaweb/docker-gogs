@@ -38,7 +38,7 @@ RUN mkdir /build && \
 FROM base
 
 ENV S6_VERBOSITY=0 S6_BEHAVIOUR_IF_STAGE2_FAILS=2 PUID=65534 PGID=65534
-ENV GOGS_CUSTOM=/config
+ENV GOGS_CUSTOM=/config HOME=/config
 WORKDIR /config
 VOLUME /config
 EXPOSE 2222 3000
@@ -48,8 +48,7 @@ COPY --from=build-backend /build /app
 COPY ./rootfs/. /
 
 # runtime dependencies
-RUN apk add --no-cache openssh-server shadow tzdata s6-overlay curl git && \
-    apk add --no-cache gosu --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
+RUN apk add --no-cache openssh-server shadow tzdata s6-overlay curl git
 
 # run using s6-overlay
 ENTRYPOINT ["/entrypoint.sh"]
