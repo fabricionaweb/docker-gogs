@@ -48,7 +48,7 @@ COPY --from=build-backend /build /app
 COPY ./rootfs/. /
 
 # runtime dependencies
-RUN apk add --no-cache openssh-server shadow tzdata s6-overlay curl git
+RUN apk add --no-cache openssh-server tzdata s6-overlay curl git
 
 # run using s6-overlay
 ENTRYPOINT ["/entrypoint.sh"]
