@@ -13,8 +13,6 @@ ADD https://github.com/gogs/gogs.git#${BRANCH:-v$VERSION} ./
 
 # build stage ==================================================================
 FROM base AS build-backend
-# required for go-sqlite3
-ENV CGO_ENABLED=1 CGO_CFLAGS="-D_LARGEFILE64_SOURCE"
 
 # dependencies
 RUN apk add --no-cache build-base git && \
@@ -26,6 +24,8 @@ RUN go mod download
 
 # build app
 COPY --from=source /src ./
+# required for go-sqlite3
+ENV CGO_ENABLED=1 CGO_CFLAGS="-D_LARGEFILE64_SOURCE"
 ARG VERSION
 ARG COMMIT=$VERSION
 RUN mkdir /build && \
